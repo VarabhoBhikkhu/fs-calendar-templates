@@ -1,0 +1,45 @@
+icon:: 🗄️
+
+- # Files, external edits, and backups
+	- Your graph content stays in ordinary files shared with Logseq. Tine also keeps device settings and launch snapshots outside the graph. This page maps what is written where, and the safety nets around it.
+- ## What lands on disk
+	- **Pages and journals** — one Markdown or Org file per page. Existing files may live at the graph root or in nested folders; Tine saves each one back to its exact path. New files use the configured `pages/` and `journals/` folders.
+	- **Assets** — pasted and uploaded files in `assets/`. Deleting a block never deletes its media.
+	- **Graph configuration** — `logseq/config.edn`, shared with Logseq: journal date formats, macros, and UI choices such as `:ui/show-brackets?` live there.
+	- **Tine's view config** — harmless `tine.*` block properties on the view-owning block (see [[tine-guide/Features/Sheets]]). Everything else stays ordinary graph text.
+- ## Saving
+	- You never press Save: edits are written automatically to the same file the page came from, about half a second after a pause, and byte-identical rewrites are skipped.
+	- Writes are atomic and format-preserving — tabs vs spaces, comments, and compact EDN survive round-trips.
+	- A page **rename** is transactional: the file move and every `[[reference]]` / `#tag` rewrite commit together, re-checked just before writing, or roll back.
+	- An Org file is rewritten only when Tine can reproduce it byte-for-byte; one it cannot round-trip opens **read-only** so the graph cannot be corrupted.
+- ## External edits
+	- Tine notices changes made outside it — Logseq, Syncthing, or another editor. Settings (**t s**) → **Files** → **Watch for external edits**: **Live (inotify)** (default, no idle wakeups) or **Poll (3s)** for filesystems where the OS watcher misses edits (some network mounts). Saved per device.
+	- A page you are not editing updates in place automatically. A page with unsaved edits is never overwritten: Tine shows a banner and skips that page in future saves until you choose **Use disk version** (re-read the file) or **Keep mine (overwrite)** (write your version).
+	- Prefer to approve even clean external updates yourself? Turn on Settings → **Backups & recovery** → **Always ask before applying an external change**. Tine then holds the silent case and offers **Reload from disk** / **Keep mine**; changes that already conflict or arrive mid-edit keep their existing safer handling.
+	- Returning to Tine asks the watcher for a fresh pass, covering network mounts, suspended apps, and sync tools that delivered no live filesystem event. A large `git checkout`, `fossil update`, branch switch, or sync burst is grouped into one external revision and summarized once instead of interrupting once per page.
+	- `logseq/config.edn` is live too. A change made in Logseq, a text editor, or delivered by a sync provider updates favorites, shortcuts, macros, the home page, journal formats, hidden properties, and other shared settings during the session; reopening the graph is not required. Tine reloads only when the file's bytes actually changed.
+	- Running two Tine windows on the same graph — or on a graph nested inside an open one — is refused, so that conflict cannot happen locally. For file sync between devices, run one app at a time on the graph where you can, and let conflict copies (below) catch the rest.
+- ## Snapshots — automatic backups
+	- Each time Tine opens your graph it snapshots eligible Markdown/Org files across the graph, plus `logseq/config.edn` and asset `.edn` sidecars, to a local folder **outside** the graph. Syncthing never syncs it. Binary assets are not copied.
+	- Settings → **Backups & recovery** → **Snapshots to keep** (default 12) controls how many survive; the oldest beyond the count are pruned.
+	- 1. Pick a snapshot and choose **Restore**, then confirm.
+	- 2. What you should see: Tine snapshots your current state first, restores backed-up graph text to its original paths, restores config and sidecars, and reloads the graph — a mistaken restore is itself reversible.
+- ## Trash
+	- Deleting a page or journal moves the file to `logseq/.tine-trash/pages/` or `logseq/.tine-trash/journals/`, not permanent deletion. Its name gains a timestamp followed by `__`.
+	- Duplicate journal files you trash, discarded sync-conflict copies, and unused media from an orphan scan land there too.
+	- To restore something, open the matching typed folder, remove the timestamp and `__` from its name, then move it into `pages/`, `journals/`, or `assets/` with your file manager. Tine picks it up like any external change.
+	- Settings → **Files** → **Orphan assets and trash** can find media no block links to (a deleted block keeps its files, so unused media accumulates) and trash it, and **Empty asset trash** deletes *asset* trash permanently — page, journal, and conflict recovery files are always kept.
+- ## Sync tools and conflict copies
+	- Keep Syncthing or Dropbox on your graph — Tine is built to coexist with them. Two files that resolve to the same journal day are kept, not dropped: Settings → **Backups & recovery** → **Duplicate journal days** offers **Open**, **Merge**, **Rename**, or **Trash** per file.
+	- To prove that two devices really have the same source tree, open Settings → **Diagnostics** → **Verify synchronized graph** on each one. Choose **Create graph verification report**, copy the report from one device to the other, paste it under **Report from the other device**, then choose **Compare reports**. Tine hashes the actual Markdown and Org bytes across nested and nonstandard layouts; reports contain paths and page names but no file contents, and nothing is uploaded automatically.
+	- A `*.sync-conflict-*` (or `(conflicted copy)`) file never appears as a page. Files carrying unresolved git or Fossil merge markers are also quarantined from ordinary saves rather than rewritten.
+	- Both kinds appear in one **N conflicts** queue at the bottom of the sidebar. Open a conflicted page to compare the complete versions block by block; each row previews its first differing line and can expand to the full text. A duplicate journal day opens the same review directly on that day, with per-file Open / Rename / Trash actions. Choose keep-mine, keep-theirs, keep-both, or a suggested **Merged** version when both sides edited separate parts of one block, then **Apply resolution**. A pinned notice keeps the review reachable while you scroll. Nothing is auto-merged or auto-deleted, and leaving with choices unfinished never blocks you.
+	- Settings → **Backups & recovery** keeps the inventory: **Review in page…** opens a conflict and **Discard copy** moves a provider conflict copy to the trash.
+	- Tine's own operation-backed sync is a separate, opt-in, **known-buggy** mode — see [[tine-guide/Features/Managed sync]]. Ordinary provider sync needs no setup at all.
+- ## Journal files named by title
+	- Tine does not silently rename journal files when a graph opens. If an otherwise valid journal uses its display title as its filename (for example `Jun 18th, 2026.md`), the day may look empty because the filename cannot be matched to its date.
+	- Settings → **Backups & recovery** → **Journal files named by title** lists these files. Review the list and choose the explicit rename action; Tine takes a snapshot first and never overwrites an occupied destination.
+- ## Export
+	- Settings → **Graph** → **Export graph to HTML** publishes your `public:: true` pages as a standalone site with fuzzy block search.
+	- Right-click a page title → **Export to PDF…** prints one page on a light background with images inlined.
+	- **Copy/export as** on a block or page names its two content choices explicitly: **Plain text (cleaned, as displayed)** or **Markdown source (preserves syntax)**. The Text / OPML / HTML destinations and cleanup/depth controls then apply to that choice.

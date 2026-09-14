@@ -1,0 +1,44 @@
+icon:: ⌨️
+
+- # Tips & shortcuts
+	- A quick tour of the things that aren't obvious on day one. (Shortcuts are remappable in Settings.)
+- ## Find anything — Ctrl+K
+	- **Ctrl+K** opens the quick switcher: jump to a page, search the text of any block, or run a command — all from one box. **Ctrl+Shift+P** opens the command palette (commands only).
+	- Use **Ctrl+Shift+K** to search only the focused page, including children hidden under folded bullets. In the ordinary Ctrl+K switcher, press **Shift+Enter** on a page or block to send it to the right sidebar, or **Ctrl/Cmd+Enter** to open it in a background tab — either way the switcher stays open.
+	- Use **Search syntax** for phrases, alternatives, exclusions, and regular expressions. Choose **Open search tab** to keep the complete search in a graph-specific tab instead of choosing only one hit.
+	- That result tab can switch between **Search**, **List**, **Table**, and **Board** without changing what matched. Use **Name this search to save it as a page** and **Save page** when the search is worth keeping: Tine turns it into an ordinary query page in your graph. **Filters / Advanced** handles friendly fields and date ranges; **Edit as visual query** opens the deeper visual editor when needed.
+	- Page-title matching keeps exact, prefix, substring, and fuzzy results in that order. Repeated choices may break ties inside one class using device-local history; Settings → **Editor** → **Learn Ctrl+K choices** disables or resets it.
+	- For a task-first tour of finding things and keeping searches, see [[tine-guide/Workflows/Find and revisit]]; for the exact rules, [[tine-guide/Reference/Pages, links, references, and search]].
+- ## Follow a link without the mouse — Ctrl+O
+	- With the caret inside a `[[link]]` or a `#tag`, **Ctrl+O** opens that page and **Ctrl+Shift+O** opens it in the right sidebar. This works while you are editing, so you can follow a name you just typed without reaching for the mouse.
+	- A link whose page does not exist yet is drawn dimmed with a dotted underline. It still works — opening it creates the page — but you can see before clicking that it will start empty. Tags are left alone, since a tag with no page of its own is perfectly normal.
+- ## Create one yourself
+	- 1. Press **Ctrl+K**.
+	- 2. Type part of a page name, a block phrase, or a command such as `Open Guide`.
+	- 3. Press **Enter** on the highlighted result.
+	- 4. What you should see: Tine jumps to the page/block or runs the command without leaving your graph.
+- ## Slash commands — /
+	- Type **/** at the start of a bullet for a menu: tasks, headings, a code block, a `/calc` live calculator, dates (Scheduled / Deadline), callouts, queries, a math block, asset upload, and more. `/Code block` opens a language picker; typing a language after an opening backtick or tilde fence offers the same completion.
+- ## Tabs
+	- **Middle-click** or **Ctrl/Cmd-click** any bullet, page, or search result to open it in a background tab; **Alt-click** the same thing to open it in the other pane. **Double-click** a tab to pin it, **drag** to reorder, **Ctrl+W** to close. Your tabs come back next launch.
+	- When a pane has more tabs than fit, use its tab-overview button to see every full title, activate or pin a tab, close it, or reorder it with the drag handle / **Alt+Up/Down** without guessing from truncated labels.
+	- For arranging tabs with the sidebars and split panes into a working layout — and saving it as a workspace — see [[tine-guide/Workflows/Keep context visible]]; [[tine-guide/Start/Where things are]] maps the places first.
+- ## The sidebars
+	- **t l** toggles the left sidebar — journals, favorites, recents, all pages, and a namespace tree. Favorites and Recent can be folded independently; **+ New group** arranges favorites into collapsible labels, and dragging left/right lifts or nests rows.
+	- **t r** toggles the right sidebar; **Shift-click** any bullet's dot to open it there and keep it beside your work. Each right-sidebar item can be folded independently, and its menu can collapse, expand, or close them all.
+	- On a phone-width window (below 640 px), either sidebar opens over the page. Tap the shaded outside edge, use the close button, press **Esc**, or press Android **Back** to return to the page. Wider tablet and desktop windows keep the ordinary persistent, resizable sidebars.
+	- Click the vertical outline guide below a bullet to expand its complete descendant subtree when anything inside is folded, or collapse all of those descendants when everything is open. The bullet itself keeps its ordinary one-level action.
+- ## Focus mode & dimming — t f / t b
+	- **t f** (focus mode) hides the sidebars and toolbar so the screen is just your text; layered **Esc** steps back out.
+	- **t b** (dim inactive blocks) fades everything except the bullet you're editing — a typewriter-style spotlight. Use it on its own, or let focus mode turn it on for you.
+- ## Page width — t w
+	- **t w** switches between the standard reading column and Wide mode. The page keeps the same width while you edit, fold blocks, or open reference sections.
+	- Wide mode fills the available pane by default. To tune either layout on this device, open Settings → **Appearance** → **Advanced**: set the standard page width in pixels, or give Wide mode a custom maximum.
+- ## A few more worth knowing
+	- In Settings → **Keyboard Shortcuts**, use the settings search field to filter commands by name, command ID, or current binding before recording a replacement. A shortcut you record works while you are editing a block too, including one whose only modifier is Alt.
+	- Use the **…** beside an ordinary page title for its complete actions menu: open the source file, copy/export, inspect properties, rename, carry tasks, or delete. It is the same menu as right-click and works from the keyboard and touch.
+	- **Carry unfinished tasks** forward into today (from the command palette) — the last 7 / 30 / 365 days, optionally with their context.
+	- Select several task bullets and press **Ctrl/Cmd+Enter** to advance each one through your workflow in a single Undo step. The selection toolbar can also wrap selected text as a page link or inline code.
+	- **Namespaces**: name a page `Project/Roadmap` and it nests under `Project` in the sidebar. This page lives under `Features`.
+	- **Page icons**: add a property like `icon:: 📚` at the very top of a page — that's where the ⌨️ on this one comes from.
+	- **Interface zoom** with **Ctrl + / - / 0**, and PDFs, images, and audio all have their own controls.

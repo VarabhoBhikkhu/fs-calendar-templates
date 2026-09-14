@@ -1,0 +1,51 @@
+icon:: 🛟
+
+- # Troubleshooting and recovery
+	- Only recovery paths Tine actually ships, each as numbered actions with the outcome to expect. For where everything lives, see [[tine-guide/Reference/Files, external edits, and backups]].
+- ## “Page changed on disk” banner
+	- Meaning: the file changed elsewhere (a sync tool or another editor) while you had unsaved edits. Nothing was written over — your unsaved text is still on screen.
+	- 1. If the disk version is the one you want, choose **Use disk version** — Tine re-reads the file. Copy your unsaved text somewhere first if you still need parts of it.
+	- 2. If your version is right, choose **Keep mine (overwrite)** — Tine writes yours over the file.
+	- 3. What you should see: the banner clears and the page saves normally again. Until you choose, that page is skipped by saving rather than silently clobbered.
+- ## Restore a deleted page or journal
+	- 1. Open `logseq/.tine-trash/pages/` or `logseq/.tine-trash/journals/` inside your graph. Deleted files have a timestamp followed by `__` before their original name.
+	- 2. Remove the timestamp and `__`, then move the file into the configured pages or journals folder. For a page that originally lived elsewhere, you may return it to that location instead.
+	- 3. What you should see: Tine notices the restored file like any external change, and the page reappears.
+- ## Review several deletions in Tine-managed storage
+	- 1. Open the **Deleted pages** dock after the warning appears. Tier 2 starts at four deletions; Tier 3 covers at least 10% of the graph (rounded up), or 50 pages when that is lower, and pauses propagation for about five minutes. Smaller Tier 1 sweeps stay quiet.
+	- 2. Review every member page, then choose exactly one explicit action: **Restore**, **Re-apply**, or **Keep deletion**. Closing the warning or panel records no choice and does not dispose the sweep.
+	- 3. If Restore fails, read the recorded cause and choose **Run Restore again**. Tine resumes through its durable whole-sweep Restore; do not recreate pages one at a time while it is running.
+	- 4. What you should see: progress and completion update live, and the finished sweep remains visible with **Restored**, **Deletion re-applied**, or **Deletion kept**. This surface applies only to experimental managed storage; the single-file steps above remain the Direct files recovery path. See [[tine-guide/Features/Managed sync]].
+- ## Restore an earlier state of the graph
+	- 1. Open Settings (**t s**) → **Backups & recovery** and find the snapshot from before the damage. (Tine snapshots your Markdown/Org files on every launch; **Snapshots to keep** controls how many survive.)
+	- 2. Choose **Restore** beside it and confirm.
+	- 3. What you should see: your current state is snapshotted first, backed-up graph text returns to its original paths, config and sidecars are restored, and the graph reloads — so even a mistaken restore can be undone by restoring the snapshot it just made.
+- ## Resolve a sync or version-control conflict
+	- 1. Choose the **N conflicts** badge at the bottom of the sidebar, or open Settings → **Backups & recovery** and choose **Review in page…**. Tine uses the same queue for sync-provider conflict copies and files carrying unresolved git or Fossil merge markers.
+	- 2. On the page, compare the complete versions in the block-by-block review. Each row previews its first differing line and can expand to full text. Accept or change each suggestion: when both sides edited separate parts of one block, Tine may offer a combined **Merged** version; otherwise choose either side or keep both. Choose page properties separately when needed, then **Apply resolution**. The review's slim pinned notice keeps it reachable while you scroll without losing your choices.
+	- 3. What you should see: the chosen page is saved through the normal guarded path. A provider conflict copy moves to the trash; before a version-control page is written without conflict markers, its exact pre-resolution file is kept in recoverable trash. If a conflict copy's original page no longer exists, discard the copy in Settings or restore the page in Logseq first.
+- ## Reconcile a duplicate journal day
+	- 1. Open the affected journal day from the **N conflicts** queue. Tine shows both files in the same block-by-block review used for provider conflicts; each file also has **Open**, **Rename**, and **Trash** actions. The same inventory remains in Settings → **Backups & recovery** → **Duplicate journal days**.
+	- 2. Choose which version of each differing block to keep (or keep both), then **Apply resolution**. The old Settings **Merge** action is the same keep-both outcome.
+	- 3. What you should see: the chosen content saved as the day and the other file moved to recoverable trash. Tine kept both source files until you decided rather than dropping one.
+- ## Tine will not start
+	- 1. Run it with debug logging: `TINE_DEBUG=1 tine` (or `tine --debug`; the AppImage the same way), reproduce the problem, then quit.
+	- 2. Tine prints the log path on startup. By default it is `tine-debug.log` in your platform's temporary folder; `TINE_DEBUG_LOG=/path` overrides it.
+	- 3. What you should see: a timestamped trace covering the environment, startup milestones, and any panic with a backtrace. It records no note content — send that file with your report.
+	- 4. On Linux, if the window never appears at all, run `TINE_GPU=0 tine` once: a rare GPU/WebKitGTK rendering failure then falls back to software rendering.
+- ## A graph will not finish opening
+	- Meaning: Tine started, but the open itself is stuck or has failed. Once it takes longer than a moment you get a card naming the current phase and the elapsed time; if the open cannot complete, the same card becomes **Tine needs help opening this workspace** with actions.
+	- 1. **Retry lookup** — attempt the same open again. This is safe to repeat.
+	- 2. **Open another graph…** — pick a different folder and leave this one untouched.
+	- 3. **Return … to Direct Files…** — offered only for a graph you enrolled in experimental Tine-managed storage; it puts that graph back on plain files.
+	- 4. **Copy details** — copies the phase and error text for an issue report. Use this before anything else if you plan to report it.
+	- 5. What you should see: no managed-storage data has been discarded by the failure. Retrying, choosing another graph, or closing and relaunching Tine are all safe to try before any manual recovery.
+- ## Create a privacy-safe diagnostic report
+	- 1. Open Settings → **Diagnostics** and choose **Create diagnostic report**. Tine previews its bounded current-and-previous-run flight recorder: fixed operation names, outcomes, timings, counts, platform, version, and build information.
+	- 2. Review the JSON, then choose **Copy report** (or **Save report…** on desktop). Nothing is uploaded automatically. The recorder excludes graph content, paths, page titles, queries, URLs, credentials, and the opt-in detailed debug log.
+	- 3. For a suspected Syncthing/Dropbox mismatch, use **Verify synchronized graph** in the same tab on both devices, exchange the generated reports, and compare them. This check includes paths and page names but never note contents.
+	- 4. What you should see: a report you can attach to an issue without first setting up `adb`, SSH, or a terminal. **Clear recorded events** removes the retained flight-recorder history after you are done.
+- ## Something parses or renders wrong
+	- 1. Open Settings → **Help improve Tine**: Tine runs its own parser and Logseq's parser over your graph, locally, and lists every place they disagree plus a parse-speed comparison.
+	- 2. Copy the report shown there — every snippet is anonymized (page names and words are scrubbed, markup shape kept) and re-verified to still reproduce the divergence before it is shown. Nothing is uploaded.
+	- 3. What you should see: a local report, including the Tine version, that you can paste into an issue.

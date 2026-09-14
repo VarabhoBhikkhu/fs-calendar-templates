@@ -1,0 +1,33 @@
+icon:: 🔍
+
+- # Find and revisit
+  - Three moves cover most of finding things: jump to what you remember, follow the trail of links, and keep a search that's worth keeping. No syntax is needed up front. The exact rules live in [[tine-guide/Reference/Pages, links, references, and search]].
+- ## "I saw it somewhere" — jump with Ctrl+K
+  - 1. Press **Ctrl+K** (Cmd on Mac) and type any words from the title or the text you remember. The switcher matches page titles and the visible text of blocks — not hidden properties or ids.
+  - 2. Too many hits? Narrow with the **Search syntax** forms listed in the switcher footer: `-draft` excludes a word, `OR` offers alternatives, quotes pin an exact phrase, `/…/` is a case-sensitive regular expression.
+  - 3. **Enter** opens the highlighted result; **Shift+Enter** opens it in the right sidebar beside your current page; **Ctrl/Cmd+Enter** or a middle-click opens it in a background tab without closing the search.
+  - 4. Sure it's on the open page? **Ctrl+Shift+K** searches only that page's blocks, including the ones folded away, and **Ctrl+F** is the slim in-page find bar with match counts.
+  - What you should see: Tine jumps to the page or block. Exact title matches lead the list; over time Tine may prefer a result you deliberately picked before, but only among equally strong matches — Settings → **Editor** → **Learn Ctrl+K choices** resets or disables that.
+- ## Follow the trail: links, tags, and references
+  - 1. Click any `[[link]]` or `#tag` to open its page. A dimmed, dotted-underlined link isn't broken — opening it creates the page. While editing, **Ctrl+O** follows the link at the caret and **Ctrl+Shift+O** opens it in the right sidebar.
+  - 2. On the page you reach, scroll to **Linked References**: every block that points here — busy pages group them by source — with a chip filter to narrow to blocks that also mention something else. Open **Unlinked References** to catch plain-text mentions you never linked.
+  - 3. Need several references outside Tine? Use the copy/export button on **Linked References** or **Unlinked References**. Every visible entry starts selected; uncheck a subset, then use the ordinary Text / OPML / HTML export choices. Linked References honors the text and chip filters already applied.
+  - 4. Found a line worth quoting in your own note? Edit the note, type `((`, and search the line's text to insert a block reference — a live copy that updates whenever the original changes.
+  - What you should see: the reference renders as link-styled text with the source's current words, and the source block gains a small reference-count badge that lists its referrers.
+- ## Keep what matters close: Favorites
+  - 1. Favorite a page from its title menu. It appears under **Favorites** in the left sidebar and remains in Logseq's ordinary flat `config.edn :favorites` list.
+  - 2. Choose **+ New group**, type a plain-text name, and drag a favorite onto it. Drag right to nest under the preceding row, left to lift out, or vertically to reorder without changing depth. Groups and favorites can both contain children. In every sidebar list the page's name is the link; the empty space beside a short name belongs to the drag, so a row can be grabbed anywhere without opening it.
+  - 3. Collapse any row that has children. Delete a group when you no longer need the label: what it held moves up one level and stays favorited.
+  - 4. Prefer the keyboard, or need to resolve a sync edit? Open the arrangement page Tine created. A bullet that is exactly one `[[page link]]` is a favorite; any other bullet is a label. Editing, nesting, adding, or removing those bullets updates the sidebar immediately.
+  - What you should see: the richer tree follows page renames and syncs as an ordinary graph page, while Logseq continues to read the same flat favorites membership. Tine does not create the arrangement page until you make a group or nest a row.
+- ## Keep the search: make a search tab
+  - 1. From any Ctrl+K search, press **Open search tab** in the footer. The whole search becomes its own tab with its own search box — nothing is written to your graph yet, and the tab comes back after a restart.
+  - 2. Refine it there: switch **Search / List / Table / Board** freely — that changes only how results are shown, never which blocks matched. Open **Filters / Advanced** for fields and date ranges, or **Edit as visual query** to build filters chip by chip; **Explain query** describes what Tine understood.
+  - 3. Worth keeping? Type a name into **Name this search to save it as a page** and press **Save page**.
+  - 4. What you should see: the tab becomes an ordinary page in your graph holding one query block. You can link to it, favorite it, and its results refresh themselves; an existing page with the same name is never overwritten.
+- ## Try it: find every mention of one page
+  - 1. Text search finds visible words. A page query asks a different question: "which blocks connect to [[tine-guide/Project/Roadmap]]?" — written as the page's name inside a query, like this live example:
+  - {{query [[tine-guide/Project/Roadmap]]}}
+  - 2. What you should see in a copied Guide or the public demo: the Roadmap outline itself (a block always counts its own page, and a nested bullet counts whatever its parents mention), the bullets elsewhere in the Guide that link there — [[tine-guide/Welcome to Tine]] has one — and this numbered bullet, which links too. In this read-only Guide the same block runs against your own graph instead, so it lists your pages' mentions — often nothing yet; it comes alive after you copy the Guide into your graph.
+- ## Where next
+  - The exact rules — ranking, search scope, saved-page behavior — are mapped in [[tine-guide/Reference/Pages, links, references, and search]]. For turning found or structured blocks into tables and boards, see [[tine-guide/Workflows/Structure repeated information]]; the wider shortcut map is [[tine-guide/Features/Tips & shortcuts]].
